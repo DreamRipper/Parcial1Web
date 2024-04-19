@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/c5ba4da084.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    .lblue{
+        font-family:  helvetica;
+        color: rgb(132, 209, 235);
+        text-decoration: none;
+    }
+    a{
+        font-family:  helvetica;
+        color: darkblue;
+        text-decoration: none;
+    }
+    body{
+        padding:100px;
+        background-color: rgb(231, 232, 242);
+        max-width: 100%;
+
+    }
+    p  {
+        font: 25px helvetica;
+        text-align: center;
+    }
+    input[type=text],input[type=email]{
+        width:100%;
+        height: 25px;
+    }
+    table{
+        font-family: helvetica,arial;
+        border: 2px solid lightgray;
+        float: right;
+        width: 100%;
+
+    }
+    h6{
+        font: 14px helvetica;
+        text-align: center;
+    }
+    .centrado{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .fieldset-externo{
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        width: 300px;
+        border: lightgrey;
+        background-color: white;
+        box-shadow: inset;
+        box-shadow: 5px 5px 15px gray;
+    }
+    .contenedor{
+        width: 100%;
+        position: relative;
+        display: inline-flex;
+
+    }
+    .contenedor input{
+        flex-grow: 1;
+
+    }
+    .contenedor button{
+        position: absolute;
+        right: 0;
+        top: 0;
+        border: 2px solid green;
+        background-color: #f0f0f0;
+        height: 100%;
+        cursor: pointer;
+        color: #4CAF50;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    .contenedor button:hover{
+        background-color: darkgreen;
+    }
+
+    .fieldset-interno{
+        box-shadow: inset;
+        box-shadow: 5px 5px 15px gray;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd; 
+    }
+    .txt{
+        font: 14px helvetica;
+        text-align: left;  
+    }
+    #mensajeCambios {
+        display: none; /* Ocultar el mensaje inicialmente */
+        margin-top: 20px;
+        text-align: center;
+    }
+    .aceptar{
+        border-radius: 4px;
+        float: left;
+        border: 2px solid gray;
+        background-color: white;
+        cursor: pointer;
+        height: 35px;
+        color: gray;
+    }
+    .aceptar:hover{
+        background-color: #4CAF50;
+    }
+    .cancelar:hover{
+        background-color: red;
+    }
+    .cancelar{
+        border-radius: 4px;
+        float: left;
+        background-color: white;
+        border: 2px solid red;
+        cursor: pointer;
+        height: 35px;
+        color: red ;
+    }
+</style>
+<body>
+    <p><b>Web</b>Developer</p> 
+    <form action=""></form>
+    <div class="centrado">
+        <fieldset class="fieldset-externo">
+            <h6>formulario de afiliación</h6>
+            <input type="text" id="name" placeholder="Nombre completo"><br><br>
+            <input type="email" id="mail" placeholder="Email"><br><br>
+            <input type="text" id="phone_number" placeholder="text"><br><br>
+            <div class="contenedor">
+                <input type="text" id="gustoInput">
+                <button id="agregarGusto">Gustos</button>
+            </div><br>
+            <br>
+            <fieldset class="fieldset-interno">
+                <table id="tablaGustos">
+                    <thead>
+                        <tr>
+                            <th>Gusto</th>
+                            <th>%</th>
+                            <th>edit</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </fieldset><br>
+            <div id="mensajeCambios">
+                <p class="txt">Pulse Aceptar para guardar los cambios o cancelar para anularlos</p><br>
+                <button id="botonAceptar" class="aceptar">Aceptar</button>
+                <button id="botonCancelar" class="cancelar">Cancelar</button>
+            </div> <br><br><br>
+            <a class = "lblue"href="https://sites.google.com/view/dweb1-uis/home">Ir a site de P web</a><br>
+        </fieldset> 
+    </div> 
+
+    <script>
+    document.getElementById("agregarGusto").addEventListener("click", function() {
+        var gustoInput = document.getElementById("gustoInput").value;
+        if (gustoInput.trim() !== "") {
+            var tablaGustos = document.getElementById("tablaGustos").getElementsByTagName("tbody")[0];
+            var nuevaFila = tablaGustos.insertRow();
+            var celdaGusto = nuevaFila.insertCell(0);
+            var celdaPorcentaje = nuevaFila.insertCell(1);
+            var celdaEditar = nuevaFila.insertCell(2);
+
+            celdaGusto.innerHTML = gustoInput;
+            celdaPorcentaje.innerHTML = "0%";
+            celdaEditar.innerHTML = "<a href='#'>Editar</a>";
+
+            var enlacesEditar = tablaGustos.querySelectorAll("a");
+            enlacesEditar.forEach(function(enlace) {
+                enlace.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    
+                    var fila = event.target.parentNode.parentNode;
+                    var celdas = fila.cells;
+                    
+
+                    celdas[2].innerHTML = "En edición";
+                    
+                    celdas[0].innerHTML = "<input type='text' value='" + celdas[0].innerHTML + "'>";
+                    celdas[1].innerHTML = "<input type='text' value='" + celdas[1].innerHTML.replace('%', '') + "'>";
+                    document.getElementById("mensajeCambios").style.display = "block";
+
+                });
+            });
+        } else {
+            alert("Por favor ingresa un gusto antes de agregarlo.");
+        }
+    });
+    </script>
+</body>
+</html>
